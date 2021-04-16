@@ -2,9 +2,6 @@ package br.com.bruno.dao;
 
 import java.util.List;
 
-import javax.persistence.criteria.CriteriaBuilder;
-
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -76,15 +73,4 @@ public class UserDAO {
         }
         return user;		
     }
-	
-//	public Criteria getCriteria() {
-//		return HibernateUtil.getSessionFactory().getCurrentSession().createCriteria(User.class);
-//		CriteriaBuilder cb = 
-//	}
-//	
-//	public List<User> getByNome(String nome) {
-//		
-//		return null;
-//		
-//	}
 }
