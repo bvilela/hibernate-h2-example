@@ -1,0 +1,90 @@
+package br.com.bruno.dao;
+
+import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+import br.com.bruno.entidade.User;
+import br.com.bruno.util.HibernateUtil;
+
+public class UserDAO {
+    public List<User> getUsers(){
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("from User", User.class).list();
+        }
+    }
+
+	public User findById(Long id) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.find(User.class, id);
+        }
+    }    
+    
+	public User add(User user) {
+        Transaction transaction = null;
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.save(user);
+            
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return null;		
+    }
+	
+    public void delete(Long id) {
+        Transaction transaction = null;
+    	
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            User user = session.find(User.class, id);
+            
+        	if(user != null) {
+        		session.remove(user);
+            }
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }   
+    }	 
+    
+	public User update(User user) {
+        Transaction transaction = null;
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.update(user);
+            
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return user;		
+    }
+	
+//	public Criteria getCriteria() {
+//		return HibernateUtil.getSessionFactory().getCurrentSession().createCriteria(User.class);
+//		CriteriaBuilder cb = 
+//	}
+//	
+//	public List<User> getByNome(String nome) {
+//		
+//		return null;
+//		
+//	}
+}
